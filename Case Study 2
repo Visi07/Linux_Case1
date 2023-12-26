@@ -1,1 +1,112 @@
+For Jane (Ubuntu):
+Upgrade Python to Python3:
+
+# Check Python version
+python --version
+
+# If Python 3 is not installed, install it
+sudo apt update
+sudo apt install python3
+
+# If Python 2 is present, remove it
+sudo apt remove python
+
+# Confirm the upgraded Python version
+python3 --version
+
+Install MySQL:
+
+# Check if MySQL is installed
+mysql --version
+
+# If not installed, install MySQL
+sudo apt update
+sudo apt install mysql-server
+
+# Start MySQL service
+sudo service mysql start
+
+
+Install Java from tar.gz:
+
+# Download Java tar.gz (replace URL with the actual Java version)
+wget https://example.com/path/to/java.tar.gz
+
+# Extract Java tar.gz
+tar -zxvf java.tar.gz
+
+# Move to a suitable location (e.g., /opt)
+sudo mv java_version /opt
+
+# Provide executable permission
+sudo chmod +x /opt/java_version/bin/java
+
+# Add Java to system PATH 
+export PATH=$PATH:/opt/java_version/bin
+For Tom (CentOS):
+Remove Python for Tom:
+
+# Check if Python is installed
+python --version
+
+# If Python is present, remove it
+sudo yum remove python
+
+# Confirm the removal
+python --version  
+# Should show an error indicating Python is not installed
+Install MySQL:
+
+# Check if MySQL is installed
+mysql --version
+
+# If not installed, install MySQL
+sudo yum update
+sudo yum install mysql-server
+
+# Start MySQL service
+sudo service mysqld start
+
+
+Install Java from tar.gz:
+
+# Download Java tar.gz (replace URL with the actual Java version)
+wget https://example.com/path/to/java.tar.gz
+
+# Extract Java tar.gz
+tar -zxvf java.tar.gz
+
+# Move to a suitable location (e.g., /opt)
+sudo mv java_version /opt
+
+# Provide executable permission
+sudo chmod +x /opt/java_version/bin/java
+
+# Add Java to system PATH 
+export PATH=$PATH:/opt/java_version/bin
+Running Applications after Boot:
+To ensure Java starts immediately after boot, we can add the Java executable command to a startup script or use systemd (for Ubuntu) or chkconfig (for CentOS) to manage the service.
+
+#Ubuntu:
+
+sudo nano /etc/systemd/system/java-autostart.service
+Add the following content:
+
+ini
+Copy code
+[Unit]
+Description=Java Autostart
+After=network.target
+
+[Service]
+ExecStart=/opt/java_version/bin/java -jar /path/to/your/application.jar
+
+[Install]
+WantedBy=multi-user.target
+Save the file and then run:
+
+sudo systemctl enable java-autostart.service
+sudo systemctl start java-autostart.service
+On CentOS, we would use chkconfig in a similar manner.
+
 
