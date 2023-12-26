@@ -1,0 +1,74 @@
+1. Build a Private Network:
+Connect Tom and Tina's laptops using a LAN cable or connect wirelessly.
+
+2. Check Network Configuration:
+On both laptops, check the network configuration:
+
+
+ifconfig
+Both laptops should be  in the same subnet.
+
+3. Ping Test:
+Try pinging each other's laptops to check if there is connectivity:
+
+
+ping <other-laptop-IP>
+If successful, a connection is established.
+
+4. Remote Log-in (SSH):
+Both Tina and Tom can use SSH for remote log-in. Install the OpenSSH server if not already installed:
+
+sudo apt install openssh-server  # For Ubuntu
+sudo yum install openssh-server  # For CentOS
+Then, they can log in remotely using:
+
+ssh <username>@<other-laptop-IP>
+
+5. File Sharing:
+FTP (File Transfer Protocol):
+
+Pro: Simple setup.
+Con: Less secure, as credentials are sent in plaintext.
+SCP (Secure Copy):
+
+Pro: Secure, uses SSH for data transfer.
+Con: Requires SSH access.
+SFTP (SSH File Transfer Protocol):
+
+Pro: Secure, provides both file operations and directory listings.
+Con: Requires SSH access.
+
+
+6. Troubleshooting Tools:
+Wireshark: Captures and analyzes the packets on the network.
+tcpdump: A command-line packet analyzer.
+netstat: Displays network connections, routing tables, interface statistics, masquerade connections, etc.
+
+
+7. Opening Ports at Firewall:
+Importance:
+Servers often listen on specific ports (e.g., 80 for HTTP, 22 for SSH).
+Firewalls need to allow traffic on these ports for services to function.
+
+8. Internet Connectivity:
+DoS Attack Remedy:
+Ensure unnecessary ports are closed.
+Use firewalls to restrict access.
+Employ security measures like fail2ban to block repeated failed login attempts.
+
+9. Connect to the Internet:
+Configure the laptops to connect to the Internet using the available network connection (Wi-Fi or Ethernet).
+
+Summary:
+Network Setup: Connect laptops, check ifconfig, ping each other.
+Remote Log-in: Use SSH for secure remote log-in.
+File Sharing: Choose between FTP, SCP, and SFTP based on security requirements.
+Troubleshooting: Use tools like Wireshark, tcpdump, netstat for network diagnostics.
+Firewall: Open specific ports for servers to run and ensure security.
+Internet Connectivity: Connect laptops to the Internet with proper configuration.
+By following these steps, Tom and Tina can effectively set up their private network, enable secure remote log-in, explore file sharing options, troubleshoot network issues, and understand the importance of firewall settings.
+
+
+
+
+
