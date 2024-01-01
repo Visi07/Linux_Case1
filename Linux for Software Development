@@ -1,0 +1,150 @@
+1. Pipe-based Communication:
+A pipe is a simple form of interprocess communication (IPC) that allows data to be passed between two related processes. Here's a basic example in Python:
+
+pipe_example.py
+
+
+import os
+
+def child_process(pipe_out):
+    message = "Hello from child process!"
+    os.write(pipe_out, message.encode())
+
+def parent_process(pipe_in):
+    message = os.read(pipe_in, 100).decode()
+    print(f"Parent received: {message}")
+
+if __name__ == "__main__":
+    pipe_in, pipe_out = os.pipe()
+
+    pid = os.fork()
+
+    if pid == 0:
+        # Child process
+        os.close(pipe_in)
+        child_process(pipe_out)
+    else:
+        # Parent process
+        os.close(pipe_out)
+        parent_process(pipe_in)
+
+2. Named Pipe (FIFO):
+Named pipes (FIFOs) are useful when unrelated processes need to communicate. They are files in the file system that act as pipes.
+
+named_pipe_example.sh
+
+
+mkfifo my_pipe
+
+# Process 1
+echo "Hello from Process 1" > my_pipe
+
+# Process 2
+read message < my_pipe
+echo "Process 2 received: $message"
+
+rm my_pipe
+
+3. Interprocess Communication (IPC):
+IPC mechanisms, such as message queues, shared memory, and semaphores, can be used for more complex communication. Here's a simple example using Python's multiprocessing module:
+
+ipc_example.py
+
+
+from multiprocessing import Process, Queue
+
+def child_process(queue):
+    message = "Hello from child process!"
+    queue.put(message)
+
+def parent_process(queue):
+    message = queue.get()
+    print(f"Parent received: {message}")
+
+if __name__ == "__main__":
+    queue = Queue()
+
+    child = Process(target=child_process, args=(queue,))
+    parent = Process(target=parent_process, args=(queue,))
+
+    child.start()
+    parent.start()
+
+    child.join()
+    parent.join()
+
+4. Unix Domain Socket (UDS):
+Unix Domain Sockets allow communication between processes on the same machine using sockets. Here's a basic Python example:
+
+unix_socket_example.py
+
+
+import socket
+import os
+
+def server():
+    server_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    server_socket.bind("/tmp/my_socket")
+    server_socket.listen(1)
+
+    connection, _ = server_socket.accept()
+    data = connection.recv(1024)
+    print(f"Server received: {data.decode()}")
+
+    connection.close()
+    server_socket.close()
+
+def client():
+    client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    client_socket.connect("/tmp/my_socket")
+
+    message = "Hello from client!"
+    client_socket.send(message.encode())
+
+    client_socket.close()
+
+if __name__ == "__main__":
+    pid = os.fork()
+
+    if pid == 0:
+        # Child process (server)
+        server()
+    else:
+        # Parent process (client)
+        client()
+
+5. Network Domain Sockets:
+For communication between two processes on different laptops, we can use network domain sockets. Update the unix_socket_example.py to use socket.AF_INET and provide appropriate IP addresses and port numbers.
+
+6. Git Installation and Basic Commands:
+For the installation of Git and basic commands, we can follow below steps:
+
+
+# Install Git
+sudo apt-get update
+sudo apt-get install git
+
+# Configure Git
+git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+
+# Create a new repository
+git init
+
+# Add files to the staging area
+git add .
+
+# Commit changes
+git commit -m "Initial commit"
+
+# Check repository status
+git status
+
+# View commit history
+git log
+
+
+
+
+
+
