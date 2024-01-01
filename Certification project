@@ -1,0 +1,96 @@
+1. Creating User Accounts:
+
+# Create user accounts for Jane and Jack
+sudo adduser Jane
+sudo adduser Jack
+
+2. Creating Separate Home Directories:
+
+# Separate home directories for Jane, Jack, and Tom
+sudo mkdir /home/Jane
+sudo mkdir /home/Jack
+
+3. Common Repository Script:
+Create a common repository script accessible to all users:
+
+# Create a common repository directory
+sudo mkdir /common_repo
+
+# Grant access to Jane, Jack, and Tom
+sudo chown -R Tom:Tom /common_repo
+sudo chmod -R 775 /common_repo
+
+4. Installing Git on Remote System:
+Install Git on the remote system:
+
+# Remote System (replace 'remote_ip' with the actual IP address)
+ssh Tom@remote_ip
+
+# Install Git
+sudo apt-get update 
+sudo apt-get install git
+(yum instead of apt in case of RHEL)
+e.g
+# Install Git
+sudo yum install git
+
+
+5. Cron Job for Deleting Empty Files and Directories:
+Add a cron job to delete empty files and directories every day at 00:00:
+
+# Edit crontab
+crontab -e
+
+# Add the following line
+0 0 * * * find /tmp -type f -empty -delete && find /tmp -type d -empty -delete
+
+6. Cron Job for System Upgrade:
+Add a cron job to upgrade the system every week on Tuesday at 6:00 am:
+
+# Edit crontab
+crontab -e
+
+# Add the following line
+0 6 * * 2 sudo apt-get update && sudo apt-get upgrade -y
+
+7. System Monitoring Script:
+Create a script for system monitoring and put it in the common repository:
+
+
+# Monitoring script (monitor.sh)
+#!/bin/bash
+
+echo "CPU Load: $(uptime | awk '{print $10}')"
+echo "Memory Usage: $(free -h | awk '/Mem/ {print $3 "/" $2}')"
+echo "Disk Usage: $(df -h / | awk '/\// {print $3 "/" $2}')"
+echo "Network Usage: $(ifconfig | grep 'RX bytes' | awk '{print "RX: " $2 ", TX: " $6}')"
+echo "Active Logged-in Users: $(who | wc -l)"
+
+8. Putting Scripts in Git Repository:
+
+# Navigate to the common repository
+cd /common_repo
+
+# Initialize Git repository
+git init
+
+# Add and commit the scripts
+git add .
+git commit -m "Initial commit"
+
+9. Fetching Data for Remote Server:
+
+# Fetch data and push to the remote server
+git remote add origin Tom@remote_ip:/path/to/remote_repo.git
+git push -u origin master
+
+10. Restricting Users from Accessing YouTube:
+Edit the /etc/hosts file to block access to YouTube:
+
+# Open hosts file
+sudo nano /etc/hosts
+
+# Add the following line
+127.0.0.1       www.youtube.com
+
+
